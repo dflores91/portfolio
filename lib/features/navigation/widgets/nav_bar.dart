@@ -40,15 +40,15 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
               if (isDesktop)
                 Row(
                   children: [
-                    _buildNavItem(context, 'Habilidades', NavigationSection.skills),
-                    const SizedBox(width: 12),
                     _buildNavItem(context, 'Proyectos', NavigationSection.projects),
                     const SizedBox(width: 12),
                     _buildNavItem(context, 'Experiencia', NavigationSection.journey),
                     const SizedBox(width: 12),
+                    _buildNavItem(context, 'Habilidades', NavigationSection.skills),
+                    const SizedBox(width: 12),
                     _buildNavItem(context, 'Educación', NavigationSection.education),
                     const SizedBox(width: 24),
-                    _buildConnectButton(),
+                    _buildConnectButton(context),
                   ],
                 )
               else
@@ -98,25 +98,32 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
     );
   }
 
-  Widget _buildConnectButton() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: AppColors.primary,
-        foregroundColor: AppColors.surfaceContainerLowest,
-        elevation: 0,
-        padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(30),
-        ),
-      ),
-      onPressed: () => onSectionTap(NavigationSection.contact),
-      child: Text(
-        'Contacto',
-        style: GoogleFonts.jetBrainsMono(
-          fontWeight: FontWeight.w700,
-          fontSize: 14,
-        ),
-      ),
+  Widget _buildConnectButton(BuildContext context) {
+    return BlocBuilder<NavigationCubit, NavigationState>(
+      builder: (context, state) {
+        final bool isActive = state.activeSection == NavigationSection.contact;
+        return ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: AppColors.primary,
+            foregroundColor: AppColors.surfaceContainerLowest,
+            elevation: isActive ? 4 : 0,
+            shadowColor: isActive ? AppColors.primary.withValues(alpha: 0.5) : Colors.transparent,
+            side: isActive ? const BorderSide(color: AppColors.primaryContainer, width: 1.5) : BorderSide.none,
+            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
+            ),
+          ),
+          onPressed: () => onSectionTap(NavigationSection.contact),
+          child: Text(
+            'Contacto',
+            style: GoogleFonts.jetBrainsMono(
+              fontWeight: FontWeight.w700,
+              fontSize: 14,
+            ),
+          ),
+        );
+      },
     );
   }
 
@@ -135,14 +142,6 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 ListTile(
-                  leading: const Icon(Icons.code, color: AppColors.primary),
-                  title: const Text('Habilidades'),
-                  onTap: () {
-                    Navigator.pop(context);
-                    onSectionTap(NavigationSection.skills);
-                  },
-                ),
-                ListTile(
                   leading: const Icon(Icons.dashboard_outlined, color: AppColors.primary),
                   title: const Text('Proyectos'),
                   onTap: () {
@@ -156,6 +155,14 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
                   onTap: () {
                     Navigator.pop(context);
                     onSectionTap(NavigationSection.journey);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.code, color: AppColors.primary),
+                  title: const Text('Habilidades'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    onSectionTap(NavigationSection.skills);
                   },
                 ),
                 ListTile(

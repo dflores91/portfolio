@@ -29,21 +29,75 @@ class _PortfolioPageState extends State<PortfolioPage> {
   final GlobalKey _educationKey = GlobalKey();
   final GlobalKey _contactKey = GlobalKey();
 
+  bool _isAutoScrolling = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
   @override
   void dispose() {
+    _scrollController.removeListener(_onScroll);
     _scrollController.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_isAutoScrolling || !_scrollController.hasClients) return;
+
+    final double maxScroll = _scrollController.position.maxScrollExtent;
+    final double currentScroll = _scrollController.offset;
+
+    if (maxScroll - currentScroll <= 140) {
+      context.read<NavigationCubit>().setSection(NavigationSection.contact);
+      return;
+    }
+
+    if (currentScroll < 200) {
+      context.read<NavigationCubit>().setSection(NavigationSection.about);
+      return;
+    }
+
+    final sections = [
+      (_contactKey, NavigationSection.contact),
+      (_educationKey, NavigationSection.education),
+      (_skillsKey, NavigationSection.skills),
+      (_journeyKey, NavigationSection.journey),
+      (_projectsKey, NavigationSection.projects),
+    ];
+
+    for (final (key, section) in sections) {
+      final ctx = key.currentContext;
+      if (ctx != null) {
+        final renderBox = ctx.findRenderObject() as RenderBox?;
+        if (renderBox != null && renderBox.hasSize) {
+          final dy = renderBox.localToGlobal(Offset.zero).dy;
+          if (dy <= 260) {
+            context.read<NavigationCubit>().setSection(section);
+            return;
+          }
+        }
+      }
+    }
+
+    context.read<NavigationCubit>().setSection(NavigationSection.about);
   }
 
   void _scrollTo(GlobalKey key, NavigationSection section) {
     context.read<NavigationCubit>().setSection(section);
     final BuildContext? targetContext = key.currentContext;
     if (targetContext != null) {
+      _isAutoScrolling = true;
       Scrollable.ensureVisible(
         targetContext,
         duration: const Duration(milliseconds: 700),
         curve: Curves.easeInOutCubic,
-      );
+      ).whenComplete(() {
+        _isAutoScrolling = false;
+        _onScroll();
+      });
     }
   }
 
@@ -68,11 +122,15 @@ class _PortfolioPageState extends State<PortfolioPage> {
 
   void _scrollToTop() {
     context.read<NavigationCubit>().setSection(NavigationSection.about);
+    _isAutoScrolling = true;
     _scrollController.animateTo(
       0,
       duration: const Duration(milliseconds: 700),
       curve: Curves.easeInOutCubic,
-    );
+    ).whenComplete(() {
+      _isAutoScrolling = false;
+      _onScroll();
+    });
   }
 
   @override
