@@ -98,7 +98,7 @@ class ContactSection extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: AppColors.surfaceContainerLowest,
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 18),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -113,11 +113,14 @@ class ContactSection extends StatelessWidget {
             children: [
               const Icon(Icons.mail_outline, size: 18),
               const SizedBox(width: 10),
-              Text(
-                AppData.email,
-                style: GoogleFonts.jetBrainsMono(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700,
+              Flexible(
+                child: Text(
+                  AppData.email,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.jetBrainsMono(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               const SizedBox(width: 8),
@@ -126,34 +129,45 @@ class ContactSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 18),
-        Row(
+        Wrap(
+          spacing: 18,
+          runSpacing: 8,
           children: [
-            const Icon(
-              Icons.phone_iphone,
-              size: 15,
-              color: AppColors.textMuted,
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.phone_iphone,
+                  size: 15,
+                  color: AppColors.textMuted,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  AppData.phone,
+                  style: GoogleFonts.jetBrainsMono(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(width: 6),
-            Text(
-              AppData.phone,
-              style: GoogleFonts.jetBrainsMono(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
-            ),
-            const SizedBox(width: 18),
-            const Icon(
-              Icons.location_on_outlined,
-              size: 15,
-              color: AppColors.textMuted,
-            ),
-            const SizedBox(width: 6),
-            Text(
-              'Puebla, México',
-              style: GoogleFonts.jetBrainsMono(
-                fontSize: 12,
-                color: AppColors.textSecondary,
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.location_on_outlined,
+                  size: 15,
+                  color: AppColors.textMuted,
+                ),
+                const SizedBox(width: 6),
+                Text(
+                  'Puebla, México',
+                  style: GoogleFonts.jetBrainsMono(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -412,11 +426,14 @@ class ContactSection extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Text(
-            'Estado del Sistema: En línea & Escalando',
-            style: GoogleFonts.jetBrainsMono(
-              fontSize: 11,
-              color: AppColors.textSecondary,
+          Flexible(
+            child: Text(
+              'Estado del Sistema: En línea & Escalando',
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.jetBrainsMono(
+                fontSize: 11,
+                color: AppColors.textSecondary,
+              ),
             ),
           ),
         ],

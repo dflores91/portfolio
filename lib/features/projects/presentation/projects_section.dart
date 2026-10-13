@@ -57,7 +57,7 @@ class ProjectsSection extends StatelessWidget {
                         (project) => Expanded(
                           child: Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: _buildProjectCard(project),
+                            child: _buildProjectCard(context, project),
                           ),
                         ),
                       )
@@ -69,7 +69,7 @@ class ProjectsSection extends StatelessWidget {
                       .map(
                         (project) => Padding(
                           padding: const EdgeInsets.only(bottom: 24),
-                          child: _buildProjectCard(project),
+                          child: _buildProjectCard(context, project),
                         ),
                       )
                       .toList(),
@@ -81,44 +81,50 @@ class ProjectsSection extends StatelessWidget {
     );
   }
 
-  Widget _buildProjectCard(ProjectItem project) {
+  Widget _buildProjectCard(BuildContext context, ProjectItem project) {
     final Color categoryColor = switch (project.accentIndex) {
       0 => AppColors.primary,
       1 => AppColors.tertiary,
       _ => AppColors.secondary,
     };
 
+    final bool isMobile = ResponsiveLayout.isMobile(context);
+
     return HoverCard(
       leftBorderColor: categoryColor,
-      padding: const EdgeInsets.all(28),
+      padding: EdgeInsets.all(isMobile ? 20 : 28),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: categoryColor.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(4),
-                  border: Border.all(
-                    color: categoryColor.withValues(alpha: 0.25),
+              Flexible(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 10,
+                    vertical: 4,
                   ),
-                ),
-                child: Text(
-                  project.category,
-                  style: GoogleFonts.jetBrainsMono(
-                    fontSize: 10,
-                    fontWeight: FontWeight.w700,
-                    color: categoryColor,
-                    letterSpacing: 0.8,
+                  decoration: BoxDecoration(
+                    color: categoryColor.withValues(alpha: 0.12),
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(
+                      color: categoryColor.withValues(alpha: 0.25),
+                    ),
+                  ),
+                  child: Text(
+                    project.category,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.jetBrainsMono(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w700,
+                      color: categoryColor,
+                      letterSpacing: 0.8,
+                    ),
                   ),
                 ),
               ),
+              const SizedBox(width: 8),
               const Icon(
                 Icons.devices_outlined,
                 size: 16,

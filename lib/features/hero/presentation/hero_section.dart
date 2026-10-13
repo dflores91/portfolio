@@ -57,12 +57,12 @@ class HeroSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildLocationBadge(),
+        _buildLocationBadge(isMobile),
         const SizedBox(height: 24),
         Text(
           AppData.fullName,
           style: GoogleFonts.outfit(
-            fontSize: isMobile ? 42 : 64,
+            fontSize: isMobile ? 36 : 64,
             fontWeight: FontWeight.w800,
             color: AppColors.textPrimary,
             letterSpacing: -1.2,
@@ -72,7 +72,7 @@ class HeroSection extends StatelessWidget {
         Text(
           AppData.lastName,
           style: GoogleFonts.outfit(
-            fontSize: isMobile ? 42 : 64,
+            fontSize: isMobile ? 36 : 64,
             fontWeight: FontWeight.w800,
             color: AppColors.primary,
             letterSpacing: -1.2,
@@ -82,8 +82,8 @@ class HeroSection extends StatelessWidget {
         const SizedBox(height: 16),
         Text(
           AppData.title,
-          style: const TextStyle(
-            fontSize: 20,
+          style: TextStyle(
+            fontSize: isMobile ? 18 : 20,
             fontWeight: FontWeight.w600,
             color: AppColors.textSecondary,
           ),
@@ -101,14 +101,14 @@ class HeroSection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        _buildStatsRow(),
+        _buildStatsRow(isMobile),
         const SizedBox(height: 36),
-        _buildActionButtons(),
+        _buildActionButtons(isMobile),
       ],
     );
   }
 
-  Widget _buildLocationBadge() {
+  Widget _buildLocationBadge(bool isMobile) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
       decoration: BoxDecoration(
@@ -130,13 +130,16 @@ class HeroSection extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 8),
-          Text(
-            AppData.location.toUpperCase(),
-            style: GoogleFonts.jetBrainsMono(
-              color: AppColors.primary,
-              fontSize: 11,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 1.0,
+          Flexible(
+            child: Text(
+              AppData.location.toUpperCase(),
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.jetBrainsMono(
+                color: AppColors.primary,
+                fontSize: isMobile ? 10 : 11,
+                fontWeight: FontWeight.w600,
+                letterSpacing: isMobile ? 0.6 : 1.0,
+              ),
             ),
           ),
         ],
@@ -144,7 +147,19 @@ class HeroSection extends StatelessWidget {
     );
   }
 
-  Widget _buildStatsRow() {
+  Widget _buildStatsRow(bool isMobile) {
+    if (isMobile) {
+      return Wrap(
+        spacing: 24,
+        runSpacing: 16,
+        children: [
+          _buildStatItem('6+', 'Años de Experiencia', AppColors.primary),
+          _buildStatItem('4+', 'Despliegues Empresariales', AppColors.tertiary),
+          _buildStatItem('IA', 'Flujos Asistidos', AppColors.secondary),
+        ],
+      );
+    }
+
     return Row(
       children: [
         _buildStatItem('6+', 'Años de Experiencia', AppColors.primary),
@@ -181,7 +196,7 @@ class HeroSection extends StatelessWidget {
     );
   }
 
-  Widget _buildActionButtons() {
+  Widget _buildActionButtons(bool isMobile) {
     return Wrap(
       spacing: 16,
       runSpacing: 12,
@@ -190,7 +205,10 @@ class HeroSection extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             backgroundColor: AppColors.primary,
             foregroundColor: AppColors.surfaceContainerLowest,
-            padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 24 : 32,
+              vertical: 16,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -209,7 +227,10 @@ class HeroSection extends StatelessWidget {
           style: OutlinedButton.styleFrom(
             foregroundColor: AppColors.textPrimary,
             side: const BorderSide(color: AppColors.cardBorder, width: 1.2),
-            padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 16),
+            padding: EdgeInsets.symmetric(
+              horizontal: isMobile ? 20 : 28,
+              vertical: 16,
+            ),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
             ),
@@ -220,11 +241,14 @@ class HeroSection extends StatelessWidget {
             children: [
               const FaIcon(FontAwesomeIcons.github, size: 16),
               const SizedBox(width: 8),
-              Text(
-                'Repositorios GitHub',
-                style: GoogleFonts.jetBrainsMono(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w600,
+              Flexible(
+                child: Text(
+                  'Repositorios GitHub',
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.jetBrainsMono(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               ),
               const SizedBox(width: 6),

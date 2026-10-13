@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:portfolio/core/theme/app_colors.dart';
+import 'package:portfolio/core/utils/responsive_layout.dart';
 
 class IdeMockup extends StatelessWidget {
   const IdeMockup({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final bool isMobile = ResponsiveLayout.isMobile(context);
+
     return Container(
       decoration: BoxDecoration(
         color: AppColors.cardSurface,
@@ -22,7 +25,7 @@ class IdeMockup extends StatelessWidget {
             ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(28),
+            padding: EdgeInsets.all(isMobile ? 18 : 28),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -103,7 +106,7 @@ class IdeMockup extends StatelessWidget {
 
   Widget _indentLine(String key, List<String> values) {
     return Padding(
-      padding: const EdgeInsets.only(left: 16, top: 2, bottom: 2),
+      padding: const EdgeInsets.only(left: 12, top: 2, bottom: 2),
       child: Wrap(
         children: [
           _token('$key: [', AppColors.primary),
@@ -140,13 +143,17 @@ class IdeMockup extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(
-                'Estado del Sistema',
-                style: GoogleFonts.jetBrainsMono(
-                  fontSize: 12,
-                  color: AppColors.textSecondary,
+              Flexible(
+                child: Text(
+                  'Estado del Sistema',
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.jetBrainsMono(
+                    fontSize: 12,
+                    color: AppColors.textSecondary,
+                  ),
                 ),
               ),
+              const SizedBox(width: 8),
               Text(
                 'Óptimo 100%',
                 style: GoogleFonts.jetBrainsMono(

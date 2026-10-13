@@ -36,7 +36,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildBrand(),
+              Flexible(child: _buildBrand()),
               if (isDesktop)
                 Row(
                   children: [
@@ -70,6 +70,7 @@ class NavBar extends StatelessWidget implements PreferredSizeWidget {
         onTap: () => onSectionTap(NavigationSection.about),
         child: Text(
           AppData.brandName,
+          overflow: TextOverflow.ellipsis,
           style: GoogleFonts.outfit(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.w700,
