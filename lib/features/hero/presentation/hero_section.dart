@@ -147,11 +147,11 @@ class HeroSection extends StatelessWidget {
   Widget _buildStatsRow() {
     return Row(
       children: [
-        _buildStatItem('6+', 'Años Exp.', AppColors.primary),
+        _buildStatItem('6+', 'Años de Experiencia', AppColors.primary),
         const SizedBox(width: 32),
-        _buildStatItem('Producción', 'Apps Lanzadas', AppColors.tertiary),
+        _buildStatItem('4+', 'Despliegues Empresariales', AppColors.tertiary),
         const SizedBox(width: 32),
-        _buildStatItem('IA', 'Asistida', AppColors.secondary),
+        _buildStatItem('IA', 'Flujos Asistidos', AppColors.secondary),
       ],
     );
   }

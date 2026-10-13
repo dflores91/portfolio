@@ -67,48 +67,68 @@ class JourneySection extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 32),
-        Row(
-          children: [
-            Expanded(child: _buildStatBox('6+', 'Años Exp.', AppColors.primary)),
-            const SizedBox(width: 16),
-            Expanded(
-              child: _buildStatBox(
-                '4+',
-                'Despliegues Empresariales',
-                AppColors.tertiary,
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(
+                child: _buildStatBox(
+                  value: '6+',
+                  label: 'Años de\nExperiencia',
+                  valueColor: AppColors.primary,
+                ),
               ),
-            ),
-          ],
+              const SizedBox(width: 16),
+              Expanded(
+                child: _buildStatBox(
+                  value: '4+',
+                  label: 'Despliegues\nEmpresariales',
+                  valueColor: AppColors.tertiary,
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildStatBox(String value, String label, Color valueColor) {
+  Widget _buildStatBox({
+    required String value,
+    required String label,
+    required Color valueColor,
+  }) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 22),
       decoration: BoxDecoration(
         color: AppColors.cardSurface,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.cardBorder),
       ),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Text(
             value,
-            style: TextStyle(
-              fontSize: 26,
+            textAlign: TextAlign.center,
+            style: GoogleFonts.outfit(
+              fontSize: 32,
               fontWeight: FontWeight.w800,
               color: valueColor,
+              height: 1.1,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 8),
           Text(
             label.toUpperCase(),
+            textAlign: TextAlign.center,
             style: GoogleFonts.jetBrainsMono(
-              fontSize: 10,
+              fontSize: 11,
               color: AppColors.textMuted,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.6,
+              height: 1.35,
             ),
           ),
         ],
